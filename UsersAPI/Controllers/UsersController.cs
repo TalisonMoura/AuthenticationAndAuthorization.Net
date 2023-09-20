@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using UsersAPI.Data.Dtos;
+using UsersAPI.Models;
+using UsersAPI.Services;
 
 namespace UsersAPI.Controllers
 {
@@ -7,10 +11,18 @@ namespace UsersAPI.Controllers
     [Route("[Controller]")]
     public class UsersController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult CreateUser(CreateUserDto userDto)
+        private RegistrationService _registrationService;
+
+        public UsersController(RegistrationService registrationService)
         {
-            throw new NotImplementedException();
+            _registrationService = registrationService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(CreateUserDto userDto)
+        {
+            await _registrationService.Register(userDto);
+            return Ok("User registered");
         }
     }
 }
