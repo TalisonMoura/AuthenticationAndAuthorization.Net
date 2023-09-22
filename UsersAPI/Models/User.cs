@@ -6,6 +6,5 @@ namespace UsersAPI.Models
     {
         public DateTime DateOfBirth { get; set; }
         public User() : base() { }
-
     }
 }
