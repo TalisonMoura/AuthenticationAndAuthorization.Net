@@ -8,16 +8,24 @@ namespace UsersAPI.Services
 {
     public class TokenService
     {
+        private IConfiguration _configuration;
+
+        public TokenService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string GenerateToken(User user)
         {
             Claim[] claims = new Claim[]
             {
                 new Claim("username", user.UserName),
                 new Claim("id", user.Id),
-                new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToString())
+                new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToString()),
+                new Claim("LoginTimestamp", DateTime.UtcNow.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abrerkaw80jdkawuhd7eff8tawhdk654jfhdkawuh"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
 
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
