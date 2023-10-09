@@ -40,6 +40,5 @@ namespace UsersAPI.Services
             return token;
         }
 
-
     }
 }
